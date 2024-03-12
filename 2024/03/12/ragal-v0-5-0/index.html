@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ragal-v0.5.0 | lzh's Blog</title><script>var config = {"hostname":"http://lzh2233.github.io","root":"/","preload":true,"path":"search.json"}</script><link rel="stylesheet" href="/css/arknights.css"><link rel="stylesheet" href="//unpkg.com/@highlightjs/cdn-assets@11.4.0/styles/atom-one-dark-reasonable.min.css"><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 6.1.0"></head><body style="background-image:url(https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg);"><div id="cursor-container"><div id="cursor-outer"></div><div id="cursor-effect"></div></div><main><header><nav><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><ol class="navContent"><li class="navItem search-header"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></li><li class="navItem"><a href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem"><a href="/archives/"><span class="navItemTitle">Archives</span></a></li><li class="navItem"><a href="/about/"><span class="navItemTitle">About</span></a></li></ol></nav><div class="search-popup"><div id="search-result"></div></div></header><article><div id="post-bg"><div id="post-title"><h1>ragal-v0.5.0</h1><div id="post-info"><span>First Post:<span class="control"><time datetime="2024-03-12T09:28:27.000Z" id="date"> 2024-03-12</time></span></span><br><span>Last Update:<span class="control"><time datetime="2024-03-12T09:40:29.294Z" id="updated"> 2024-03-12</time></span></span></div></div><hr><div id="post-content"><h1 id="RAGAL-engine-v0-5-1"><a href="#RAGAL-engine-v0-5-1" class="headerlink" title="RAGAL engine-v0.5.1"></a>RAGAL engine-v0.5.1</h1><blockquote>
+<p><strong>🎉🎉🎉RAGAL大更新啦！🥳🥳🥳</strong></p>
+</blockquote>
+<h2 id="快速了解"><a href="#快速了解" class="headerlink" title="快速了解"></a>快速了解</h2><ul>
+<li>版本号: v0.4.0</li>
+<li>新增功能<ul>
+<li><a href="#ragal%E9%85%8D%E7%BD%AE%E5%AF%B9%E8%B1%A1">工程化结构(ragal.cfg.yml配置文件)</a></li>
+<li><a href="#%E6%96%B0%E5%BB%BA%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%B7%A5%E7%A8%8B">创建初始化的工程</a></li>
+<li><a href="#%E5%B7%A5%E7%A8%8B%E6%89%93%E5%8C%85">打包工程</a></li>
+<li><a href="#%E6%89%93%E5%BC%80%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7">开发时可以打开web的开发工具</a></li>
+<li><a href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89">支持自定义文本本地变量和工程的全局变量</a></li>
+<li><a href="#%E5%B5%8C%E5%85%A5javascript">文中可嵌入<em>Javascript</em>脚本并即时运行</a></li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E9%A2%98%E9%A1%B5">可自定义标题页面</a></li>
+<li><a href="#%E6%9D%A1%E4%BB%B6%E5%BC%8F%E5%88%86%E6%94%AF">支持条件式分支选项</a></li>
+<li><a href="#%E7%AB%8B%E7%BB%98%E7%8A%B6%E6%80%81">立绘状态的支持</a></li>
+</ul>
+</li>
+<li>平台支持: win7&#x2F;10&#x2F;11</li>
+<li>标签: <code>markdown式文件所写及所得</code>, <code>可嵌入js脚本</code></li>
+<li>二次开发所需技术: <code>javascript-css-html</code>, <code>markdown语法</code>,<code>美术</code></li>
+</ul>
+<h2 id="v0-4-0的新增内容指南"><a href="#v0-4-0的新增内容指南" class="headerlink" title="v0.4.0的新增内容指南"></a>v0.4.0的新增内容指南</h2><p>0.4版本真的改了很多，我还记得v0.1版时单纯的解析md，到v0.2版本的初具工程化，再到v0.3启动器与ui引导界面的分离，到这一版的可以打包工程。经历很多的重构（主要是技术与经验不够，走了很多歪路，至今都不知埋了多少雷了🎃）。这里先申明几个概念：</p>
+<ol>
+<li>启动器是播放gal的程序，我后面称其为galplayer</li>
+<li>ui引导界面是集成了打开gal工程，创建工程，打包工程的程序，后称其为ragal</li>
+</ol>
+<h3 id="ragal配置对象"><a href="#ragal配置对象" class="headerlink" title="ragal配置对象"></a>ragal配置对象</h3><p>工程化结构的核心就是基于一个配置文件中的基本信息，包括了启动游戏时的屏幕大小，标题，关键的资源文件目录的路径等设置；这些关键信息都可记录在<code>y(a)ml</code>文件中，ragal打开工程是通过打开<code>yml</code>并读取其中的关键内容来加载并启动galplayer的。工程的根目录就是此yml配置文件所在目录路径。当然，yml配置文件需要一定的结构。</p>
+<h4 id="配置结构"><a href="#配置结构" class="headerlink" title="配置结构"></a>配置结构</h4><p>符合ragal配置格式的yml文件称为<strong>ragal配置对象</strong>，您可以通过修改它来自定义gal工程。下面我们默认配置文件名为<code>ragal.cfg.yml</code>。ragal配置对象大致有以下对象构成：</p>
+<ul>
+<li><a href="#BaseConfig">base</a></li>
+<li><a href="#PathConfig">src</a></li>
+<li><a href="#GameConfig">game</a></li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment">#Example ragal.cfg.yml file</span><br><br><span class="hljs-attr">base:</span><br>  <span class="hljs-attr">title:</span> <span class="hljs-string">demo</span><br>  <span class="hljs-attr">title_page:</span> <span class="hljs-string">/path/cfg/yml</span><br>  <span class="hljs-attr">theme:</span> <span class="hljs-string">$theme.css</span><br>  <span class="hljs-attr">icon:</span> <span class="hljs-string">icon.ico</span><br>  <span class="hljs-attr">mainresolution:</span> [<span class="hljs-number">1080</span>, <span class="hljs-number">720</span>]<br><br><span class="hljs-attr">src:</span><br>  <span class="hljs-attr">entry:</span> <span class="hljs-string">src/entry.md</span><br>  <span class="hljs-attr">img:</span> <span class="hljs-string">img</span><br>  <span class="hljs-attr">standing:</span> <span class="hljs-string">standing</span><br>  <span class="hljs-attr">music:</span> <span class="hljs-string">music</span><br>  <span class="hljs-attr">video:</span> <span class="hljs-string">video</span><br>  <span class="hljs-attr">custom_css:</span> []<br><br><span class="hljs-attr">game:</span><br>  <span class="hljs-attr">typing:</span><br>    <span class="hljs-attr">speed:</span> <span class="hljs-number">4</span><br>    <span class="hljs-attr">size:</span> <span class="hljs-number">2.9</span><br>  <span class="hljs-attr">standing:</span> <br>    <span class="hljs-attr">1:</span><br>      <span class="hljs-bullet">-</span> [<span class="hljs-number">30</span><span class="hljs-string">%</span>, <span class="hljs-number">-10</span><span class="hljs-string">%</span>, <span class="hljs-number">100</span><span class="hljs-string">%</span>]<br>    <span class="hljs-attr">2:</span> <br>      <span class="hljs-bullet">-</span> [<span class="hljs-number">10</span><span class="hljs-string">%</span>, <span class="hljs-number">-10</span><span class="hljs-string">%</span>, <span class="hljs-number">100</span><span class="hljs-string">%</span>]<br>      <span class="hljs-bullet">-</span> [<span class="hljs-number">50</span><span class="hljs-string">%</span>, <span class="hljs-number">-10</span><span class="hljs-string">%</span>, <span class="hljs-number">100</span><span class="hljs-string">%</span>]<br>  <span class="hljs-attr">volume:</span><br>    <span class="hljs-attr">bgm:</span> <span class="hljs-number">100</span><br>    <span class="hljs-attr">se:</span> <span class="hljs-number">100</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="BaseConfig"><a href="#BaseConfig" class="headerlink" title="BaseConfig"></a>BaseConfig</h5><table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><em>title</em></td>
+<td>String</td>
+<td>必填</td>
+<td>gal标题</td>
+</tr>
+<tr>
+<td align="left"><em>title_page</em></td>
+<td>String?</td>
+<td>null</td>
+<td>自定义标题页html路径</td>
+</tr>
+<tr>
+<td align="left"><em>theme</em></td>
+<td>String?</td>
+<td>null</td>
+<td>主题相关的css路径</td>
+</tr>
+<tr>
+<td align="left"><em>icon</em></td>
+<td>String?</td>
+<td>null</td>
+<td>图标路径</td>
+</tr>
+<tr>
+<td align="left"><em>mainresolution</em></td>
+<td>[Number;2]</td>
+<td>必填</td>
+<td>窗口尺寸[宽x高]</td>
+</tr>
+</tbody></table>
+<p>目前<code>theme</code>，<code>icon</code>属性无关紧要</p>
+<h5 id="PathConfig"><a href="#PathConfig" class="headerlink" title="PathConfig"></a>PathConfig</h5><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>entry</em></td>
+<td>String</td>
+<td>必填</td>
+<td>剧本入口文件路径</td>
+</tr>
+<tr>
+<td><em>img</em></td>
+<td>String</td>
+<td>必填</td>
+<td>图片目录路径</td>
+</tr>
+<tr>
+<td><em>standing</em></td>
+<td>String</td>
+<td>必填</td>
+<td>立绘目录路径</td>
+</tr>
+<tr>
+<td><em>music</em></td>
+<td>String</td>
+<td>必填</td>
+<td>音乐目录路径</td>
+</tr>
+<tr>
+<td><em>video</em></td>
+<td>String</td>
+<td>必填</td>
+<td>声音目录路径</td>
+</tr>
+<tr>
+<td><em>custom_css</em></td>
+<td>Vec</td>
+<td>[]</td>
+<td>自定义css文件路径集合</td>
+</tr>
+</tbody></table>
+<p>目前<code>music</code>，<code>video</code>，<code>custom_css</code>属性无关紧要</p>
+<h5 id="GameConfig"><a href="#GameConfig" class="headerlink" title="GameConfig"></a>GameConfig</h5><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>typing</em></td>
+<td>Object</td>
+<td>{speed: 4, size: 2.9}</td>
+<td>对话的打字速度和字体大小默认值</td>
+</tr>
+<tr>
+<td><em>standing</em></td>
+<td>Object</td>
+<td>null</td>
+<td>默认立绘屏幕站位，只支持1~2人的人物镜头</td>
+</tr>
+<tr>
+<td><em>volume</em></td>
+<td>Object</td>
+<td>{bgm: 100, se: 100}</td>
+<td>音频默认值</td>
+</tr>
+</tbody></table>
+<p>目前<code>typing</code>属性数值是锁死的（我感觉当前挺不错的，后续会改的）</p>
+<p>目前<code>volume</code>属性无关紧要（毕竟还没实现音频模块）</p>
+<h3 id="新建初始化的工程"><a href="#新建初始化的工程" class="headerlink" title="新建初始化的工程"></a>新建初始化的工程</h3><p>这个简单😆直接点击ragal中的<code>build project</code>,选中目标目录，会在其下创建ragal的配置文件及其相关内容</p>
+<h3 id="工程打包"><a href="#工程打包" class="headerlink" title="工程打包"></a>工程打包</h3><p>打包工程是v0.4.0中的ragal新增的功能，点击<code>bundle project</code>，需要选择两个路径：</p>
+<ol>
+<li>需要打包工程的ragal配置对象所在路径</li>
+<li>需要打包到的目标目录路径</li>
+</ol>
+<p>注意事项：角色立绘只应该放置在standing文件夹内，并其alias.json只应该为相对路径</p>
+<h3 id="打开开发工具"><a href="#打开开发工具" class="headerlink" title="打开开发工具"></a>打开开发工具</h3><p>在ragal打开工程时，<code>ctrl+shift+i</code>组合键可打开galplayer的开发工具，供二次开发的调试</p>
+<h3 id="变量的定义"><a href="#变量的定义" class="headerlink" title="变量的定义"></a>变量的定义</h3><p>用户可以在galplayer运行时定义自己的变量，分为全局的变量和剧本文本的本地变量。</p>
+<h4 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h4><p>运行时的全局变量需定义在custom_state.json文件中，并且要在ragal.cfg.yml同级目录下。对于目前版本，没有特别的变量api，以后可能考虑。</p>
+<p>注意，全局变量是游戏运行时才会被加载进游戏中，标题页是没有全局变量的。</p>
+<p>在嵌入式js中，有<code>global.state</code>变量挂载了所定义的全局变量</p>
+<h4 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h4><p>在剧本头部可定义局部变量，如下所示：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">---<br>color: red<br><span class="hljs-section">flag: false</span><br><span class="hljs-section">---</span><br></code></pre></td></tr></table></figure>
+
+<p>通过this来访问这些本地变量</p>
+<h3 id="嵌入javascript"><a href="#嵌入javascript" class="headerlink" title="嵌入javascript"></a>嵌入javascript</h3><p>galplayer是支持剧本中插入js脚本并即时运行，并每个脚本块间都是相互隔离的，但都能访问本剧本的局部变量<code>this</code>；剧本间也是相互隔离的，但<code>global</code>对象是全局的，所有剧本共享，以下是样例：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">---<br>hp: 100<br>mp: 100<br><span class="hljs-section">atk:10</span><br><span class="hljs-section">---</span><br>&lt;!-- 本地变量 --&gt;<br><br><br>我：你休想！<br><br>怪物对我发动了攻击！<br><br><span class="hljs-code">```js</span><br><span class="hljs-code">let monster = global.state.monster  //global.state就是custom_state.json文件中描述的对象</span><br><span class="hljs-code">this.hp -= monster.atk</span><br><span class="hljs-code">if (this.hp &lt; 0) console.log(&quot;菜就多练！打不赢就别玩😅&quot;) //会打印到控制台的，可以按ctrl+shift+i来打开控制台查看效果</span><br><span class="hljs-code">```</span><br><br>我：✌🙄✌<br>哒咩！<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="自定义标题页"><a href="#自定义标题页" class="headerlink" title="自定义标题页"></a>自定义标题页</h3><p><code>title_page</code>中定义了标题页的所在路径，如果你有能力可以自己写个漂亮的页面。另外，重要的是，目前版本有三个api可供调用：</p>
+<ul>
+<li>onStart()    开始游戏</li>
+<li>onExit()      退出游戏（退出程序）</li>
+</ul>
+<p>你可以在你的html里使用它们</p>
+<h3 id="条件式分支"><a href="#条件式分支" class="headerlink" title="条件式分支"></a>条件式分支</h3><p>可以根据条件是否满足来实现选项的出现，从而实现复杂的分支剧情，这不是很有趣吗！</p>
+<p>条件分支根据选项语法的扩展，目前只支持一层，条件间是取或的，取第一个为真的条件，下面是个例子</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">-</span> [<span class="hljs-string">我去</span>](<span class="hljs-link">other-end.md</span>)<br><span class="hljs-bullet">  -</span> this.hp &gt; 0   <br><span class="hljs-bullet">  -</span> this.atk &gt; 0<br><span class="hljs-bullet">-</span> 我不去<br>&lt;!-- hp和atk其中一个大于0就能展示【我去】的选项 --&gt;<br><br><span class="hljs-bullet">-</span> [<span class="hljs-string">我去</span>](<span class="hljs-link">other-end.md</span>)<br><span class="hljs-bullet">  -</span> this.hp &gt; 0 &amp;&amp; this.atk &gt; 0<br><span class="hljs-bullet">-</span> 我不去<br>&lt;!-- hp和atk都必须大于0才能展示【我去】的选项 --&gt;<br></code></pre></td></tr></table></figure>
+
+<h4 id="advance"><a href="#advance" class="headerlink" title="advance"></a>advance</h4><p>这里有更加进阶的写法，能方便你写出更加灵活复杂的剧本。</p>
+<ul>
+<li>当条件满足时的立即执行函数</li>
+<li>点击选项时的回调函数</li>
+</ul>
+<p><strong>条件满足时的立即执行函数</strong></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">-</span> [<span class="hljs-string">我去</span>](<span class="hljs-link">other-end.md</span>)<br><span class="hljs-bullet">  -</span> [<span class="hljs-string">this.hp &gt; 0</span>](<span class="hljs-link">badend.js</span>)  &lt;!-- 满足条件时可以执行里面的暴露的默认函数 --&gt;<br><span class="hljs-bullet">  -</span> this.atk &gt; 0  &lt;!-- 进入默认的剧本 --&gt;<br><span class="hljs-bullet">-</span> 我不去<br></code></pre></td></tr></table></figure>
+
+<p>这里我们详细讲解<code>badend.js</code>的样例，而这里最为重要的是需要暴露默认函数，<code>this</code>指针指向本剧本的state，这个函数可以返回一个<code>object&#123;url, txt, opt&#125;</code>，这个返回值修改本选项，以下是个<strong>example</strong>:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">atk</span> &gt; <span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-keyword">return</span> &#123;<br>            <span class="hljs-attr">txt</span>: <span class="hljs-string">&quot;会赢的&quot;</span>,<br>            <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;goodend.md&quot;</span>,<br>            <span class="hljs-attr">opt</span>: <span class="hljs-string">&quot;callback&quot;</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> &#123;<br>        <span class="hljs-attr">txt</span>: <span class="hljs-string">&quot;牢大别肘&quot;</span>,<br>        <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;seeYouAgain.md&quot;</span>,<br>        <span class="hljs-attr">opt</span>: <span class="hljs-string">&quot;switch&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>你发现了，上面有个很有趣的<code>opt</code>成员变量，<code>opt</code>取决了怎么切换剧本的方式，其值有以下枚举：</p>
+<ul>
+<li>switch 直接切换</li>
+<li>callback 回调剧本（像是插入）</li>
+<li>custom 点击时调用自定义的<code>js</code>脚本</li>
+</ul>
+<p>这里有很快捷的在markdown中的写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs markdow">- [会赢的 #callback](end1.md) <br>- [让他们瞧瞧我们的厉害](end2.md) &lt;!-- 默认switch --&gt;<br>- [战斗，爽！ #custom](end3.js)<br></code></pre></td></tr></table></figure>
+
+<h3 id="立绘状态"><a href="#立绘状态" class="headerlink" title="立绘状态"></a>立绘状态</h3><p>角色的状态有立绘差分了，写起来更符合直觉😋</p>
+<h4 id="alias-json中的立绘资源映射写法"><a href="#alias-json中的立绘资源映射写法" class="headerlink" title="alias.json中的立绘资源映射写法"></a>alias.json中的立绘资源映射写法</h4><figure class="highlight json"><table><tr><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;我&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/img&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;小熊&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;default&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/默认的立绘&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;闷闷不乐&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/path/小熊-闷闷不乐.png&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="剧本markdown中的写法"><a href="#剧本markdown中的写法" class="headerlink" title="剧本markdown中的写法"></a>剧本markdown中的写法</h4><figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">我：你好！<br><br>小熊（闷闷不乐）：。。。啊，早上好。<br><br>小熊看到你连忙装作无事。<br><br>小熊：昨天睡得还好吗？ &lt;!-- 默认立绘 --&gt;<br></code></pre></td></tr></table></figure>
+
+<br/>
+
+<h3 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h3><figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">&lt;!-- 画外音 --&gt;<br>&lt;!-- <br>  以下两种是有区别的！<br>  os是不会重置当前的镜头的<br>--&gt;<br>os: 他已经无路可退了<br><br>他已经无路可退了<br><br><br>&lt;!-- 一人多句话的语法糖 --&gt;<br>我：我绝不去那里，我太菜了。<br>再说，那儿也不会闹出什么事，去了也没用。<br>所以，我劝你也别去，要是真闹出事来你就脱不了身了。<br>&lt;!-- 等同于以下写法 --&gt;<br>我：我绝不去那里，我太菜了。<br><br>我：再说，那儿也不会闹出什么事，去了也没用。<br><br>我：所以，我劝你也别去，要是真闹出事来你就脱不了身了。<br></code></pre></td></tr></table></figure>
+
+<p>其他的设置背景，设置镜头等语法可参考上一版ragal指南，不过对于镜头的默认位置设置是支持的，可看<a href="#GameConfig">ragal配置对象.game.standing</a>，可以这样方便的设置镜头了<code>&gt; +&#123;我,小熊&#125;</code></p>
+<h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><p>下一版想要什么功能，可以向我提提<strong>issue</strong>🙂</p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div id="footer-link" style="left: 50%;order: 0;border-left: 1px solid #fe2;padding-right: unset;max-width: calc(50% - 5px);"><a href="/2023/01/13/%E5%93%88%E5%B8%8C%E8%A1%A8/">哈希表 Prev →</a></div></div></div></div><div id="bottom-btn"><a id="to-top" onClick="index.scrolltop();" title="to top" style="opacity: 0; display: none;">∧</a></div></article><div class="aside-box"><aside><div id="aside-top"><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">lzh</a></h1><div id="description"><p></p></div><!--if page.published === undefined--><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">8</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">5</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">5</span></div></section></div><div id="aside-block"><div id="toc-div"><h1>INDEX</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RAGAL-engine-v0-5-1"><span class="toc-number">1.</span> <span class="toc-text">RAGAL engine-v0.5.1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E4%BA%86%E8%A7%A3"><span class="toc-number">1.1.</span> <span class="toc-text">快速了解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v0-4-0%E7%9A%84%E6%96%B0%E5%A2%9E%E5%86%85%E5%AE%B9%E6%8C%87%E5%8D%97"><span class="toc-number">1.2.</span> <span class="toc-text">v0.4.0的新增内容指南</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ragal%E9%85%8D%E7%BD%AE%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.1.</span> <span class="toc-text">ragal配置对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">配置结构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#BaseConfig"><span class="toc-number">1.2.1.1.1.</span> <span class="toc-text">BaseConfig</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PathConfig"><span class="toc-number">1.2.1.1.2.</span> <span class="toc-text">PathConfig</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#GameConfig"><span class="toc-number">1.2.1.1.3.</span> <span class="toc-text">GameConfig</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%B7%A5%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">新建初始化的工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E6%89%93%E5%8C%85"><span class="toc-number">1.2.3.</span> <span class="toc-text">工程打包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%BC%80%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="toc-number">1.2.4.</span> <span class="toc-text">打开开发工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.2.5.</span> <span class="toc-text">变量的定义</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.5.1.</span> <span class="toc-text">全局变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.5.2.</span> <span class="toc-text">局部变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B5%8C%E5%85%A5javascript"><span class="toc-number">1.2.6.</span> <span class="toc-text">嵌入javascript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E9%A2%98%E9%A1%B5"><span class="toc-number">1.2.7.</span> <span class="toc-text">自定义标题页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%BC%8F%E5%88%86%E6%94%AF"><span class="toc-number">1.2.8.</span> <span class="toc-text">条件式分支</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#advance"><span class="toc-number">1.2.8.1.</span> <span class="toc-text">advance</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%8B%E7%BB%98%E7%8A%B6%E6%80%81"><span class="toc-number">1.2.9.</span> <span class="toc-text">立绘状态</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#alias-json%E4%B8%AD%E7%9A%84%E7%AB%8B%E7%BB%98%E8%B5%84%E6%BA%90%E6%98%A0%E5%B0%84%E5%86%99%E6%B3%95"><span class="toc-number">1.2.9.1.</span> <span class="toc-text">alias.json中的立绘资源映射写法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%A7%E6%9C%ACmarkdown%E4%B8%AD%E7%9A%84%E5%86%99%E6%B3%95"><span class="toc-number">1.2.9.2.</span> <span class="toc-text">剧本markdown中的写法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%82%E9%A1%B9"><span class="toc-number">1.2.10.</span> <span class="toc-text">杂项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Future"><span class="toc-number">1.3.</span> <span class="toc-text">Future</span></a></li></ol></li></ol></div></div></div><footer><nobr><span class="text-title">©</span><span class="text-content">1970 to 2022</span></nobr><br><nobr><span class="text-title">ICP</span><span class="text-content">——备案号——</span></nobr><br><text>published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></text><text> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknight</a></text><wbr><text>by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></text></footer></aside></div></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script>const reset=_=>{}</script><script src="//unpkg.com/@highlightjs/cdn-assets@11.4.0/highlight.min.js"></script><script src="/js/arknights.js"></script><script>document.addEventListener("load",reset())</script></body></html>
